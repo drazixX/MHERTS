@@ -1,0 +1,97 @@
+<?php
+
+include './connection/conn.php';
+
+// Retrieve the FamilyRec_Id from the query parameters
+$FamilyRec_Id = $_GET['FamilyRec_Id'] ?? null; // Assuming FamilyRec_Id is passed through the URL
+
+if ($FamilyRec_Id !== null) {
+    // Query to retrieve patient statuses for a specific FamilyRec_Id
+    $sql_patient_status = "SELECT status FROM patient_status WHERE FamilyRec_Id = ?";
+    $stmt_patient_status = $conn->prepare($sql_patient_status);
+
+    // Check if prepare() succeeded
+    if (!$stmt_patient_status) {
+        die("Error preparing statement: " . $conn->error);
+    }
+
+    // Bind parameter for patient_status query
+    $stmt_patient_status->bind_param("i", $FamilyRec_Id);
+
+    // Execute the query
+    if (!$stmt_patient_status->execute()) {
+        die("Error executing statement: " . $stmt_patient_status->error);
+    }
+
+    // Store the result
+    $stmt_patient_status->store_result();
+
+    // Bind result variable
+    $stmt_patient_status->bind_result($patient_status);
+
+    // Create an array to store patient status options
+    $patient_status_options = array();
+
+    // Fetch and store all available patient status options
+    while ($stmt_patient_status->fetch()) {
+        $patient_status_options[] = $patient_status;
+    }
+
+    // Close statement
+    $stmt_patient_status->close();
+
+    // Query to retrieve statuses from colabel_status table
+    $sql_colabel_status = "SELECT lab_status FROM colabel_status";
+    $result_colabel_status = $conn->query($sql_colabel_status);
+
+    // Check if query succeeded
+    if (!$result_colabel_status) {
+        die("Error executing statement: " . $conn->error);
+    }
+
+    // Create an array to store colabel status options
+    $colabel_status_options = array();
+
+    // Fetch and store all available colabel status options
+    while ($row = $result_colabel_status->fetch_assoc()) {
+        $colabel_status_options[] = $row['lab_status'];
+    }
+
+    // Close result set
+    $result_colabel_status->close();
+
+    // Merge patient status options and colabel status options
+    $all_status_options = array_merge($patient_status_options, $colabel_status_options);
+} else {
+    echo "FamilyRec_Id parameter is missing.";
+}
+?>
+
+
+
+// Path to the PDF file
+$pdfFilePath = '../public/assets/documents/CYBERSECURITY REPORT.pdf';
+
+// Function to extract the first page of a PDF file using GD
+function extractPdfPreview($pdfFilePath) {
+    // Create Imagick object to read PDF file
+    $im = new Imagick();
+    $im->setResolution(150, 150);
+    $im->readImage($pdfFilePath.'[0]'); // Read the first page only
+
+    // Convert PDF page to GD image
+    $im->setImageFormat('png');
+    $gdImage = imagecreatefromstring($im);
+
+    return $gdImage;
+}
+
+// Get the preview image as a GD image
+$previewImage = extractPdfPreview($pdfFilePath);
+
+// Output the preview image
+header('Content-Type: image/png');
+imagepng($previewImage);
+
+// Free up memory
+imagedestroy($previewImage);

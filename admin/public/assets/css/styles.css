@@ -1,0 +1,26 @@
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* Default grid item styles */
+.grid-item {
+    background-color: #ffffff; /* Default background color */
+   
+}
+
+/* Media query for dark mode */
+@media (prefers-color-scheme: dark) {
+    .grid-item {
+        background-color: #222222; 
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .grid-item {
+        /* Add responsive styles */
+    }
+}

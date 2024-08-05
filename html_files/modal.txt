@@ -1,0 +1,85 @@
+<!-- Add Pregnancy Info Modal -->
+			<div class="modal fade" id="addFilesModal" tabindex="-1" aria-labelledby="addFilesModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addFilesModalLabel">Upload Files</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body compose-content">
+							<h5 class="mb-4"><i class="fa fa-paperclip"></i> Attachment</h5>
+							<form action="functions/upload.php" method="POST" class="dropzone" enctype="multipart/form-data" >
+								<input type="hidden" id="familyrec_id" name="familyrec_id" value="<?php echo $FamilyRec_Id; ?>">
+								<input type="hidden" id="history_id" name="history_id" value="<?php echo $history_id; ?>">
+								<div class="fallback">
+									<input id="fileInput" name="fileInput" type="file" multiple>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Upload</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Modal End -->
+
+                                              
+			//button
+                                              
+			<a class="dropdown-item rename-file-button" data-bs-toggle="modal" data-bs-target="#renameModal" data-history-id="<?php echo htmlspecialchars($row['history_id']); ?>" data-family-rec-id="<?php echo htmlspecialchars($FamilyRec_id); ?>" data-folder-name="<?php echo htmlspecialchars($folderName); ?>" data-file-id="<?php echo $row ['file_id']; ?>">Rename File</a>
+
+
+			 <!-- Modal for Renaming File -->
+                        <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="renameModalLabel">Rename File</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="renameForm" action="functions/rename_file.php" method="GET">
+                                            <div class="form-group">
+                                                <label for="newName">Rename File</label>
+                                                <input type="text" class="form-control" id="newName" name="newName" placeholder="Enter new file name">
+                                            </div>
+                                            <input type="text" id="FamilyRec_Id1" name="FamilyRec_Id1" value="">
+                                            <input type="text" id="history_id1" name="history_id1" value="">
+                                            <input type="text" id="folder_name1" name="folder_name1" value="">
+                                            <input type="text" name="file_id1" id="file_id1" value="">
+                                        </form>
+                                        <button type='button' class='btn btn-primary' id='confirmRename'>Rename</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+
+
+//script
+
+    // Renaming File
+
+    $(document).ready(function() {
+        // Event listener for the rename file button click
+        $('.rename-file-button').click(function() {
+            // Extract data attributes from the button
+            var historyId = $(this).data('history-id');
+            var familyRecId = $(this).data('family-rec-id');
+            var folderName = $(this).data('folder-name');
+            var fileId = $(this).data('file-id');
+
+            // Populate form fields in the rename modal with data attributes
+            $('#history_id1').val(historyId);
+            $('#FamilyRec_Id1').val(familyRecId);
+            $('#folder_name1').val(folderName);
+            $('#file_id1').val(fileId);
+        });
+
+        // Event binding for rename button click inside the modal
+        $('#confirmRename').click(function() {
+            $('#renameForm').submit();
+        });
+    });

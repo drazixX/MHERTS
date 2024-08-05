@@ -1,0 +1,41 @@
+<?php 
+include '../connection/conn.php';
+
+if(isset($_FILES['file']['name'])) {
+    // Get file information
+    $file_name = $_FILES['file']['name'];
+    $file_size = $_FILES['file']['size'];
+    $file_type = $_FILES['file']['type'];
+    $save_path = "../public/assets/documents/"; // Assuming your upload directory is named "uploads"
+
+    // Temporary file location
+    $tmp_file = $_FILES['file']['tmp_name'];
+
+    // PatientID and history_id
+    $PatientID = $_POST['PatientID']; // Assuming you are getting these from a form
+    $history_id = $_POST['history_id']; // Assuming you are getting these from a form
+
+    // Move uploaded file to permanent location
+    if(move_uploaded_file($tmp_file, $save_path . $file_name)) {
+        // Insert file information into database
+        $query = "INSERT INTO preg_files (file_name, file_size, file_type, save_path, date_of_insertion, PatientID, history_id)
+                  VALUES ('$file_name', '$file_size', '$file_type', '$save_path', NOW(), '$PatientID', '$history_id')";
+
+        // Execute query
+        $result = mysqli_query($conn, $query);
+
+        if($result) {
+            // Redirect to patient_details.php
+            header("Location: ../patient_details.php?PatientID=$PatientID");
+            exit(); // Ensure script stops execution after redirect
+        } else {
+            // Error handling for SQL query
+            echo "Error inserting data into database: " . mysqli_error($conn);
+        }
+    } else {
+        // Error handling for file move operation
+        echo "Error moving file to destination.";
+    }
+}
+?>
+

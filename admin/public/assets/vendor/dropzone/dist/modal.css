@@ -1,0 +1,154 @@
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto 0; /* Adjust the top margin to position the modal higher */
+    padding: 10px;
+    border: 1px solid #888;
+    /* Set width to match the screen size of a laptop */
+    width: 80%; /* Adjust this width as needed */
+    height: 100%; /* Adjust this width as needed */
+    max-width: 1200px; /* Set maximum width for larger screens */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(33.33% - 20px), 1fr)); /* Set each column to occupy 1/3 of the row's width */
+    /* grid-template-columns: repeat(3, 1fr); Display 3 files per row/ */
+    gap: 20px;
+}
+
+/* Grid item */
+/* .grid-item {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+} */
+
+/* Grid item */
+.grid-item {
+    background-color: #f0f4f9; /* Background color */
+    border-radius: 20px; /* Border radius */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+/* .grid-item:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+} */
+
+.grid-item:hover {
+    background-color: #dfe3e7; /* Hover background color */
+}
+
+/* Top section */
+.top-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.file-name {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.corner-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+.corner-icon svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* Middle section */
+.middle-section {
+    padding: 10px;
+}
+
+.middle-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Bottom section */
+.bottom-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.uploader-image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.upload-date {
+    font-size: 12px;
+}
+
+/* Different icon colors for different file types */
+.file-icon i.fa-file-pdf {
+    color: #ff0000; /* Red color for PDF files */
+}
+
+.file-icon i.fa-image {
+    color: #008000; /* Green color for image files */
+}
+
+/* Add more styles as needed */
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+.alert {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+.alert.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    padding: 0;
+    margin: 0;
+}
